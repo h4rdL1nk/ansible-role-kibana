@@ -7,7 +7,7 @@ kibana_docker_container_group_uid: 1000
 kibana_data_dir: /var/dockershared/kibana/data
 kibana_config_dir: /var/dockershared/kibana/config
 kibana_certificate_dir: /var/dockershared/kibana/certs
-kibana_cluster_name: clustermicro
+kibana_cluster_name: default 
 kibana_group: kibana
 kibana_network_port: 5601
 kibana_network_name: DOCKER_BACKEND
