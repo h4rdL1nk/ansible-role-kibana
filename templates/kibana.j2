@@ -1,4 +1,9 @@
-server.host: "0"
+
+server:
+  host: "0"
+  xsrf:
+    whitelist: [ "/api/logstash/pipeline" ]
+
 #xpack.monitoring.ui.container.elasticsearch.enabled: true
 #xpack.monitoring.ui.enabled: false
 elasticsearch.hosts: [ {% for node in elasticsearch_cluster_network_addresses %}"{% if elasticsearch_security_http_enabled %}https{% else %}http{% endif %}://{{ node }}:{{ elasticsearch_network_port }}"{% if loop.index != elasticsearch_cluster_network_addresses|length %},{% endif %}{% endfor %} ]
@@ -7,3 +12,5 @@ elasticsearch.ssl.certificateAuthorities: /certs/{{ elasticsearch_certificate_ca
 #xpack.reporting.kibanaServer.protocol: http
 #xpack.reporting.kibanaServer.port: 5601
 #xpack.reporting.kibanaServer.hostname: localhost
+
+
