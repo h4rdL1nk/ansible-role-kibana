@@ -46,12 +46,13 @@
   args:
     stdin: "{{ item.value }}"
   with_dict: "{{ secrets.kibana }}"
-  when: keystore_create.changed
+  when: keystore_create.changed or kibana_force_keystore_write
+  register: keystore_add
 
 - name: Deploy kibana containers
   docker_container:
     state: started
-    restart: "{{ kibana_config.changed or keystore_create.changed }}"
+    restart: "{{ kibana_config.changed or keystore_create.changed or keystore_add.changed }}"
     name: "smd_infra_kibana"
     image: "{{ kibana_docker_image }}:{{ kibana_docker_tag }}"
     detach: true

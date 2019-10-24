@@ -12,3 +12,5 @@ kibana_group: kibana
 kibana_network_port: 5601
 kibana_network_name: DOCKER_BACKEND
 kibana_secrets_file: vault/secrets.yml
+
+kibana_force_keystore_write: false
