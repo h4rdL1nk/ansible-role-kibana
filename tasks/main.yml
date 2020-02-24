@@ -11,6 +11,9 @@
     - "{{ kibana_config_dir }}"
     - "{{ kibana_data_dir }}"
     - "{{ kibana_certificate_dir }}"
+  tags:
+    - configuration
+    - files
 
 - name: Copy SSL certificates
   copy:
@@ -22,6 +25,10 @@
   with_items:
     - "{{ elasticsearch_certificate_ca_file_ingest }}"
     - "{{ elasticsearch_certificate_ca_file_monitoring }}"
+  tags:
+    - configuration
+    - files
+    - certificates
 
 - name: Copy kibana configuration
   template:
@@ -30,16 +37,25 @@
     owner: "{{ kibana_docker_container_user_uid }}"
     group: "{{ kibana_docker_container_group_uid }}"
   register: kibana_config
+  tags:
+    - configuration
+    - files
 
 - name: Create kibana keystore
   command: "docker run --rm -i -v {{ kibana_data_dir }}:/usr/share/kibana/data:rw,Z {{ kibana_docker_image }}:{{ kibana_docker_tag }} kibana-keystore create"
   args:
     creates: "{{ kibana_data_dir }}/kibana.keystore"
   register: keystore_create
+  tags:
+    - configuration
+    - files
+    - keystore
 
 - name: Load kibana secrets
   include_vars:
     file: "{{ lookup('env', 'PWD') }}/{{ kibana_secrets_file|default('vault/secrets.yml')}}"
+  tags:
+    - configuration
 
 - name: Add kibana keystore keys
   command: "docker run --rm -i -v {{ kibana_data_dir }}:/usr/share/kibana/data:rw,Z {{ kibana_docker_image }}:{{ kibana_docker_tag }} kibana-keystore add {{ item.key }} --stdin"
@@ -48,6 +64,10 @@
   with_dict: "{{ secrets.kibana }}"
   when: keystore_create.changed or kibana_force_keystore_write
   register: keystore_add
+  tags:
+    - configuration
+    - files
+    - keystore
 
 - name: Deploy kibana containers
   docker_container:
@@ -71,3 +91,5 @@
       - "{{ kibana_config_dir }}/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z"
       - "{{ kibana_data_dir }}/:/usr/share/kibana/data/:rw,Z"
       - "{{ kibana_certificate_dir }}:/certs/:ro,Z"
+  tags:
+    - deploy
