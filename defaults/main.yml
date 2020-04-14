@@ -15,3 +15,5 @@ kibana_secrets_file: vault/secrets.yml
 
 kibana_force_keystore_write: false
 kibana_metricbeat_monitoring_enabled: true 
+
+kibana_security_audit_enabled: false
