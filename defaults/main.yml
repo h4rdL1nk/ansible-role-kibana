@@ -17,3 +17,5 @@ kibana_force_keystore_write: false
 kibana_metricbeat_monitoring_enabled: true 
 
 kibana_security_audit_enabled: false
+
+kibana_elasticsearch_ssl_verification_mode: none
