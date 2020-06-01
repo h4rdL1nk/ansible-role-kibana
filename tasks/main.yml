@@ -61,7 +61,7 @@
   command: "docker run --rm -i -v {{ kibana_data_dir }}:/usr/share/kibana/data:rw,Z {{ kibana_docker_image }}:{{ kibana_docker_tag }} kibana-keystore add {{ item.key }} --stdin"
   args:
     stdin: "{{ item.value }}"
-  with_dict: "{{ secrets.kibana }}"
+  with_dict: "{{ secrets.kibana_keystore_keys }}"
   when: keystore_create.changed or kibana_force_keystore_write
   register: keystore_add
   tags:
