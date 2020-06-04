@@ -71,6 +71,7 @@
 
 - name: Deploy kibana containers
   docker_container:
+    api_version: {{ kibana_docker_api_version }}
     state: started
     restart: "{{ (kibana_config is defined and kibana_config.changed) or (keystore_create is defined and keystore_create.changed) or (keystore_add is defined and keystore_add.changed) }}"
     name: "smd_infra_kibana"

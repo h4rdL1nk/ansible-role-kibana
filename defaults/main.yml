@@ -2,6 +2,7 @@
 
 kibana_docker_image: registry.smartdigits.io/infra/kibana
 kibana_docker_tag: 7.2.0
+kibana_docker_api_version: 1.22
 kibana_docker_container_user_uid: 1000
 kibana_docker_container_group_uid: 1000
 kibana_data_dir: /var/dockershared/kibana/data
